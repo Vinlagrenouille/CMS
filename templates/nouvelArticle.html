@@ -1,0 +1,25 @@
+{% extends layout.html %}
+{% block contenu %}
+
+<div>
+  <form method="post" action="">
+    <label for="titre"> Titre : </label>
+    <input type="text" name="titre" placeholder="Ex : Le chevalier volant"/>
+
+    <label for="id"> Identifiant : </label>
+    <input type="text" name="id" placeholder="le-chevalier-volant"/>
+
+    <label for="auteur"> Auteur : </label>
+    <input type="text" name="auteur" placeholder="Jean Bon"/>
+
+    <label for="date"> Date de publication : </label>
+    <input type="text" name="date" placeholder="1221-12-21"/>
+
+    <label for="paragraphe"> Paragraphe : </label>
+    <textarea rows="10" name="paragraphe" placeholder="Il était un temps.."/>
+
+    <input type="submit" value="Soumettre"/>
+  </form>
+</div>
+
+{% end block %}

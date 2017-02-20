@@ -1,4 +1,5 @@
-set FLASK_APP = index.py
+go:
+	set FLASK_APP = index.py
 
 run:
 	flask run

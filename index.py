@@ -3,8 +3,15 @@ from flask import render_template
 from flask import g
 from flask import request
 from flask import redirect
+from database import Database
 
 app = Flask(__name__)
+
+def get_db():
+	db = getattr(g, '_database', None)
+	if db is None:
+		g._database = Database ()
+	return g._database
 
 @app.route('/')
 def start_home_page():

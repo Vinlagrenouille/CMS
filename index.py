@@ -13,6 +13,12 @@ def get_db():
 		g._database = Database ()
 	return g._database
 
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.disconnect()
+
 @app.route('/')
 def start_home_page():
     return render_template('accueil.html')

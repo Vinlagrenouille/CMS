@@ -41,9 +41,9 @@ def show_admin_page():
         return render_template('accueil.html')
     return render_template('admin.html', articles = articles)
 
-@app.route('/admin-nouveau', methods=['POST'])
+@app.route('/admin-nouveau', methods=['GET', 'POST'])
 def show_new_article_page():
-    return render_template('newArticle.html')
+    return render_template('nouvelArticle.html')
 
 @app.route('/admin-modifier/<identifiant>')
 def show_modifie_article_page(identifiant):

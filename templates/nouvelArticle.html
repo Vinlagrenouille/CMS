@@ -2,21 +2,28 @@
 {% block contenu %}
 
 <div>
-  <form>
+  <form action="" method="post">
     <label for="titre"> Titre : </label>
+    <br/>
     <input type="text" name="titre" placeholder="Ex : Le chevalier volant"/>
-
+    <br/>
     <label for="id"> Identifiant : </label>
+    <br/>
     <input type="text" name="id" placeholder="le-chevalier-volant"/>
-
+    <br/>
     <label for="auteur"> Auteur : </label>
+    <br/>
     <input type="text" name="auteur" placeholder="Jean Bon"/>
-
+    <br/>
     <label for="date"> Date de publication : </label>
+    <br/>
     <input type="text" name="date" placeholder="1221-12-21"/>
-
+    <br/>
     <label for="paragraphe"> Paragraphe : </label>
-    <textarea rows="10" name="paragraphe" placeholder="Il était un temps.."/>
+    <br/>
+    <textarea rows="10" name="paragraphe" placeholder="Il était un temps..">
+    </textarea>
+    <br/>
 
     <input type="submit" value="Soumettre"/>
   </form>

@@ -1,5 +1,2 @@
-go:
-	set FLASK_APP = index.py
-
-run:
-	flask run
+export FLASK_APP=index.py
+flask run

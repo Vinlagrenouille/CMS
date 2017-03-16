@@ -48,3 +48,9 @@ class Database:
         cursor.execute("select * from article")
         articles = cursor.fetchall()
         return articles
+
+    def get_5_articles(self):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select * from article where date_publication < date('now')")
+        articles = cursor.fetchmany(5)
+        return articles

@@ -1,6 +1,13 @@
 {% extends "layout.html" %}
 {% block contenu %}
 
-
+<div>
+    {%for article in listArticles %}
+    <p>{{ article[0] }}</p>
+    <p>ID : {{ article[1] }}</p>
+    <p>Date : {{ article[2] }}</p>
+    <br/>
+    {% endfor %}
+</div>
 
 {% endblock %}

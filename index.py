@@ -24,7 +24,7 @@ def close_connection(exception):
 
 @app.route('/')
 def start_home_page():
-    articles = get_db().get_articles()
+    articles = get_db().get_5_articles()
     return render_template('accueil.html', articles=articles)
 
 

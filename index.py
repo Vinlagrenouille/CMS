@@ -4,10 +4,7 @@ from flask import make_response
 from flask import g
 from flask import request
 from flask import redirect
-<<<<<<< HEAD
 from flask import url_for
-=======
->>>>>>> 649670e172753f49a0f1fd93f87121255a0b3343
 from database import Database
 
 app = Flask(__name__)

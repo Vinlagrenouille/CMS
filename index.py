@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import render_template
+from flask import make_response
 from flask import g
 from flask import request
 from flask import redirect
-from Database import Database
+from flask import url_for
+from database import Database
 
 app = Flask(__name__)
 
@@ -29,9 +31,19 @@ def start_home_page():
 
 
 @app.route('/resultat-recherche')
-def show_result(text):
-    listArticles = get_db().recherche(text)
+def show_result():
+    recherche = request.cookies.get('recherche')
+    if recherche is None:
+        return render_template('404.html'), 404
+    listArticles = get_db().recherche(recherche)
     return render_template('resultat.html', listArticles=listArticles)
+
+@app.route('/recherche', methods=['POST'])
+def donnees_recherche():
+    recherche = request.form['recherche']
+    response = make_response(redirect('resultat-recherche'))
+    response.set_cookie('recherche', recherche)
+    return response
 
 
 @app.route('/article/<identifiant>')

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from flask import Flask
 from flask import render_template
 from flask import make_response
@@ -72,8 +74,18 @@ def envoyer():
     auteur = request.form['auteur']
     date = request.form['date']
     paragraphe = request.form['paragraphe']
-    if len(idu) == 0 or len(titre) == 0 or len(identifiant) == 0 or len(auteur) == 0 or len(date) == 0 or len(paragraphe) == 0:
-        return render_template('admin-nouveau.html', erreur="Il y a une erreur sur la page")
+    if len(idu) == 0:
+        return render_template('nouvelArticle.html', erreur="Vous devez mettre un identifiant unique, le prochain numéro, par exemple!")
+    elif len(titre) == 0:
+        return render_template('nouvelArticle.html', erreur="Vous devez mettre un titre")
+    elif len(identifiant) == 0:
+        return render_template('nouvelArticle.html', erreur="Vous devez mettre un identifiant")
+    elif  len(auteur) == 0:
+        return render_template('nouvelArticle.html', erreur="Vous devez mettre un auteur")
+    elif len(date) == 0: 
+        return render_template('nouvelArticle.html', erreur="Vous devez mettre une date au format AAAA-MM-JJ")
+    elif len(paragraphe) == 0:
+        return render_template('nouvelArticle.html', erreur="Vous devez mettre un paragraphe")
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')

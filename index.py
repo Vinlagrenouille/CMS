@@ -22,15 +22,16 @@ def close_connection(exception):
         db.disconnect()
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def start_home_page():
     articles = get_db().get_5_articles()
     return render_template('accueil.html', articles=articles)
 
 
-@app.route('/resultat/<recherche>')
-def show_result():
-    return render_template('resultat.html')
+@app.route('/resultat-recherche')
+def show_result(text):
+    listArticles = get_db().recherche(text)
+    return render_template('resultat.html', listArticles=listArticles)
 
 
 @app.route('/article/<identifiant>')
@@ -44,8 +45,6 @@ def show_article(identifiant):
 @app.route('/admin')
 def show_admin_page():
     articles = get_db().get_articles()
-    if articles is None:
-        return render_template('accueil.html')
     return render_template('admin.html', articles=articles)
 
 
@@ -54,7 +53,7 @@ def show_new_article_page():
     return render_template('nouvelArticle.html')
 
 
-@app.route('/admin-modifier/<identifiant>')
+@app.route('/admin-modifier/<identifiant>', methods=['GET', 'POST'])
 def show_modifie_article_page(identifiant):
     article = get_db().get_article(identifiant)
     if article is None:

@@ -64,3 +64,10 @@ class Database:
         cursor = self.get_connection().cursor()
         cursor.execute("insert into article values(:idu, :titre, :identifiant, :auteur, :date_publication, :paragraphe)", {"idu":idu, "titre":titre, "identifiant":idenfiant, "auteur":auteur, "date_publication":date_publication, "paragraphe":paragraphe})
         return
+
+    def recherche(self, text):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select titre, identifiant, date_publication from article where titre like concat('%', :text, '%') and paragraphe like concat('%', :text, '%')", {"text":text})
+        listArticles = cursor.fetchall()
+        return listArticles
+    

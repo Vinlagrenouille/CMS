@@ -33,7 +33,7 @@ class Database:
 
     def get_article(self, identifiant):
         cursor = self.get_connection().cursor()
-        cursor.execute("select * from article where identifiant = :identifiant", {"identifiant":identifiant})
+        cursor.execute("select * from article where identifiant = :identifiant and date_publication < date('now')", {"identifiant":identifiant})
         article = cursor.fetchone()
         return article
 

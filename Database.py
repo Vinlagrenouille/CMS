@@ -33,7 +33,7 @@ class Database:
 
     def get_article(self, identifiant):
         cursor = self.get_connection().cursor()
-        cursor.execute("select * from article where identifiant = :identifiant and date_publication < date('now')", {"identifiant":identifiant})
+        cursor.execute("select * from article where identifiant = :identifiant", {"identifiant":identifiant})
         article = cursor.fetchone()
         return article
 
@@ -48,3 +48,9 @@ class Database:
         cursor.execute("select * from article")
         articles = cursor.fetchall()
         return articles
+
+
+    def update_article(self, titre, paragraphe, identifiant):
+        cursor = self.get_connection().cursor()
+        cursor.execute("update article set titre = :titre and paragraphe = :paragraphe where identifiant = :identifiant", {"titre":titre, "paragraphe":paragraphe, "identifiant":idenfiant})
+        return

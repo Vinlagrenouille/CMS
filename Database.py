@@ -31,14 +31,20 @@ class Database:
         if self.connection is not None:
             self.connection.close()
 
-    def get_article(self):
+    def get_article(self, identifiant):
         cursor = self.get_connection().cursor()
-        cursor.execute("select titre from article")
-        articles = cursor.fetchall()
-        return [article[0] for article in articles]
+        cursor.execute("select * from article where identifiant =" + identifiant)
+        article = cursor.fetchall()
+        return article
+
+    # def get_article(self):
+    #     cursor = self.get_connection().cursor()
+    #     cursor.execute("select * from article")
+    #     articles = cursor.fetchall()
+    #     return [article[0] for article in articles]
 
     def get_articles(self):
         cursor = self.get_connection().cursor()
-        cursor.execute("select titre from article")
+        cursor.execute("select * from article")
         articles = cursor.fetchall()
-        return  articles
+        return articles

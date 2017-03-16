@@ -2,16 +2,26 @@
 {% block contenu %}
 
 <div>
-  <h1>Être un bon programmeur... ou pas</h1>
-  <p>Bienvenue sur ce site qui vous parle de programmation fait par des programmeurs qui ne programment pas encore bien</p>
+    <h1>Être un bon programmeur... ou pas</h1>
+    <p>Bienvenue sur ce site qui vous parle de programmation fait par des programmeurs qui ne programment pas encore
+        bien</p>
 </div>
 
 <div>
-  <form action="" method="post">
-    <input type="text" name="recherche" placeholder="Ex : coder une pizza"/>
-    <br/>
-    <input type="submit" value="Rechercher"/>
-  </form>
+    <form action="" method="post">
+        <input type="text" name="recherche" placeholder="Ex : coder une pizza"/>
+        <br/>
+        <input type="submit" value="Rechercher"/>
+    </form>
+</div>
+
+<div>
+    {%for article in articles %}
+    <p>{{ article[0] }} {{ article[1] }} {{ article[4] }}</p>
+    <p>Tag: {{ article[2] }}</p>
+    <p>Auteur: {{ article[3] }}</p>
+    <p>{{ article[5] }}</p> <br>
+    {% endfor %}
 </div>
 
 {% endblock %}

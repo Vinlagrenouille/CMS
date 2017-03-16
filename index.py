@@ -49,9 +49,19 @@ def show_admin_page():
     return render_template('admin.html', articles=articles)
 
 
-@app.route('/admin-nouveau', methods=['GET', 'POST'])
+@app.route('/admin-nouveau', methods=['GET','POST'])
 def show_new_article_page():
-    return render_template('nouvelArticle.html')
+    idu = request.form['idu']
+    titre = request.form['titre']   
+    identifiant = request.form['identifiant']
+    auteur = request.form['auteur']
+    date = request.form['date']
+    paragraphe = request.form['paragraphe']
+    if len(idu) == 0 or len(titre) == 0 or len(identifiant) == 0 or len(auteur) == 0 or len(date) == 0 or len(paragraphe) == 0:
+        return render_template('admin-nouveau.html', erreur="L'identifiant est obligatoire")
+    else:
+        get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
+        return redirect('/form-merci')
 
 
 @app.route('/admin-modifier/<identifiant>')

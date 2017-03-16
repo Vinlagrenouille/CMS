@@ -2,12 +2,23 @@
 {% block contenu %}
 
 <div>
-    {%for article in listArticles %}
-    <p>{{ article[0] }}</p>
-    <p>ID : {{ article[1] }}</p>
-    <p>Date : {{ article[2] }}</p>
-    <br/>
-    {% endfor %}
+  {% if listArticles is not defined %}
+  {% for article in listArticles %}
+  
+  <p>{{ article[0] }}</p>
+  <p>ID : {{ article[1] }}</p>
+  <p>Date : {{ article[2] }}</p>
+  <br/>
+  {% endfor %}
+  
+  {% else %}
+  
+  <p>Aucun article correspondant</p>
+  <br/>
+  <br/>
+  <a href="/">Retour à l'accueil</a>
+  
+  {% endif %}
 </div>
 
 {% endblock %}

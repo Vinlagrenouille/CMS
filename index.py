@@ -35,8 +35,6 @@ def start_home_page():
 @app.route('/resultat-recherche')
 def show_result():
     recherche = request.cookies.get('recherche')
-    if recherche is None:
-        return render_template('404.html'), 404
     listArticles = get_db().recherche(recherche)
     return render_template('resultat.html', listArticles=listArticles)
 

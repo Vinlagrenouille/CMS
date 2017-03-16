@@ -62,7 +62,7 @@ class Database:
 
     def new_article(self, idu, titre, identifiant, auteur, date_publication, paragraphe):
         cursor = self.get_connection().cursor()
-        cursor.execute("insert into article values(:idu, :titre, :identifiant, :auteur, :date_publication, :paragraphe)", {"idu":idu, "titre":titre, "identifiant":idenfiant, "auteur":auteur, "date_publication":date_publication, "paragraphe":paragraphe})
+        cursor.execute("insert into article values(:idu, :titre, :identifiant, :auteur, :date_publication, :paragraphe)", {"idu":idu, "titre":titre, "identifiant":identifiant, "auteur":auteur, "date_publication":date_publication, "paragraphe":paragraphe})
         return
 
     def recherche(self, text):

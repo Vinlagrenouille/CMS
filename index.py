@@ -60,8 +60,12 @@ def show_admin_page():
     return render_template('admin.html', articles=articles)
 
 
-@app.route('/admin-nouveau', methods=['GET','POST'])
+@app.route('/admin-nouveau')
 def show_new_article_page():
+    return render_template('nouvelArticle.html')
+
+@app.route('/envoyer', methods=['GET','POST'])
+def envoyer():
     idu = request.form['idu']
     titre = request.form['titre']   
     identifiant = request.form['identifiant']
@@ -73,6 +77,10 @@ def show_new_article_page():
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')
+
+@app.route('/form-merci')
+def show_merci():
+	return render_template('form-merci.html')
 
 
 @app.route('/admin-modifier/<identifiant>', methods=['GET', 'POST'])

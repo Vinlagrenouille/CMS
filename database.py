@@ -61,6 +61,6 @@ class Database:
 
     def recherche(self, text):
         cursor = self.get_connection().cursor()
-        cursor.execute("select titre, identifiant, date_publication from article where titre like '%' || :text || '%' and paragraphe like '%' || :text || '%'", {"text":text})
+        cursor.execute("select titre, identifiant, date_publication from article where titre like '%' || :text || '%' or  paragraphe like '%' || :text || '%'", {"text":text})
         listArticles = cursor.fetchall()
         return listArticles

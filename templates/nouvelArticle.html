@@ -2,6 +2,9 @@
 {% block contenu %}
 
 <div>
+    {% if erreur %}
+        <p style="color:#700">{{ erreur }}</p>
+    {% endif %}
   <form action="" method="post">
     <label for="idu"> Id unique : </label>
     <br/>

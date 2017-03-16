@@ -3,7 +3,7 @@ from flask import render_template
 from flask import g
 from flask import request
 from flask import redirect
-from Database import Database
+from database import Database
 
 app = Flask(__name__)
 
@@ -57,7 +57,7 @@ def show_new_article_page():
     date = request.form['date']
     paragraphe = request.form['paragraphe']
     if len(idu) == 0 or len(titre) == 0 or len(identifiant) == 0 or len(auteur) == 0 or len(date) == 0 or len(paragraphe) == 0:
-        return render_template('admin-nouveau.html', erreur="L'identifiant est obligatoire")
+        return render_template('admin-nouveau.html', erreur="Il y a une erreur sur la page")
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')

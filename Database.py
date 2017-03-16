@@ -33,8 +33,8 @@ class Database:
 
     def get_article(self, identifiant):
         cursor = self.get_connection().cursor()
-        cursor.execute("select * from article where identifiant =" + identifiant)
-        article = cursor.fetchall()
+        cursor.execute("select * from article where identifiant = :identifiant", {"identifiant":identifiant})
+        article = cursor.fetchone()
         return article
 
     # def get_article(self):

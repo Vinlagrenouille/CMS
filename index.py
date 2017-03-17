@@ -104,9 +104,10 @@ def envoyer():
     auteur = request.form['auteur']
     date = request.form['date']
     paragraphe = request.form['paragraphe']
+    values = idu, titre, identifiant, auteur, date, paragraphe
     erreur = valider_form(idu, titre, identifiant, auteur, date, paragraphe)
     if erreur != "":
-        return render_template('nouvelArticle.html', erreur=erreur)
+        return render_template('nouvelArticle.html', erreur=erreur, values=values)
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')

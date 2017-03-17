@@ -3,9 +3,7 @@
     <h1>Écrire un nouvel article</h1>
     <h3>Laissez courir votre inspiration tout en étant moins fantasque car il vous faut remplir tous les champs.</h3>
     <div class="form-new-article">
-        {% if erreur %}
-        <p style="color:#700">{{ erreur }}</p>
-        {% endif %}
+        {% if not erreur or not values %}
         <form action="/envoyer" method="post">
             <label for="idu"> Id unique : </label>
             <br/>
@@ -34,6 +32,38 @@
             <br/>
             <input type="submit" value="Soumettre" />
         </form>
+        {% endif %}
+        {% if erreur and values%}
+        <p style="color:#700">{{ erreur }}</p>
+        <form action="/envoyer" method="post">
+            <label for="idu"> Id unique : </label>
+            <br/>
+            <input type="text" name="idu" placeholder="Ex : 69696" value="{{values[0]}}" />
+            <br/>
+            <label for="titre"> Titre : </label>
+            <br/>
+            <input type="text" name="titre" placeholder="Ex : Le codeur : chevalier volant" value="{{values[1]}}"  />
+            <br/>
+            <label for="identifiant"> Identifiant : </label>
+            <br/>
+            <input type="text" name="identifiant" placeholder="codeur-chevalier-volant" value="{{values[2]}}" />
+            <br/>
+            <label for="auteur"> Auteur : </label>
+            <br/>
+            <input type="text" name="auteur" placeholder="Jean Bon" value="{{values[3]}}"  />
+            <br/>
+            <label for="date"> Date de publication : </label>
+            <br/>
+            <input type="text" name="date" placeholder="2017-01-01" value="{{values[4]}}" />
+            <br/>
+            <label for="paragraphe"> Paragraphe : </label>
+            <br/>
+            <textarea rows="10" name="paragraphe" placeholder="Il était un temps.." value="{{values[5]}}" >
+            </textarea>
+            <br/>
+            <input type="submit" value="Soumettre" />
+        </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

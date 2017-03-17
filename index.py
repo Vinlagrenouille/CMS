@@ -16,6 +16,21 @@ sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
 
+def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
+    if len(idu) == 0:
+        erreur= "Vous devez mettre un identifiant unique, le prochain numéro, par exemple! "
+    if len(titre) == 0:
+        erreur= erreur + "Vous devez mettre un titre. "
+    if len(identifiant) == 0:
+        erreur= erreur + "Vous devez mettre un identifiant. "
+    if  len(auteur) == 0:
+        erreur= erreur + "Vous devez mettre un auteur. "
+    if len(date) == 0: 
+        erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
+    if len(paragraphe) == 0:
+        erreur= erreur + "Vous devez mettre un paragraphe."
+    return erreur
+
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -77,26 +92,8 @@ def envoyer():
     auteur = request.form['auteur']
     date = request.form['date']
     paragraphe = request.form['paragraphe']
-    estErreur = False
-    if len(idu) == 0:
-        estErreur = True
-        erreur= "Vous devez mettre un identifiant unique, le prochain numéro, par exemple! "
-    if len(titre) == 0:
-        estErreur = True
-        erreur= erreur + "Vous devez mettre un titre. "
-    if len(identifiant) == 0:
-        estErreur = True
-        erreur= erreur + "Vous devez mettre un identifiant. "
-    if  len(auteur) == 0:
-        estErreur = True
-        erreur= erreur + "Vous devez mettre un auteur. "
-    if len(date) == 0: 
-        estErreur = True
-        erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
-    if len(paragraphe) == 0:
-        estErreur = True
-        erreur= erreur + "Vous devez mettre un paragraphe."
-    if estErreur == True:
+    erreur = valider_form(idu, titre, identifiant, auteur, date, paragraphe)
+    if erreur != "":
         return render_template('nouvelArticle.html', erreur=erreur)
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)

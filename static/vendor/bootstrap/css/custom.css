@@ -12,3 +12,21 @@ p {
 	font-size: 0.9em;
 	text-align: left;
 }
+
+input[type="text"], textarea{
+	min-width: 330px;
+}
+
+input:focus::-webkit-input-placeholder {
+    opacity: 0;
+}
+.form-new-article {
+	margin:30px auto;
+}
+
+.article-list {
+	background-color: #fbfbfb;
+}
+hr	{
+	margin-bottom: 5px;
+}

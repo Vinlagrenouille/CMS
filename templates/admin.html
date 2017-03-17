@@ -7,6 +7,7 @@
 
 <div>
     {%for article in articles %}
+<<<<<<< HEAD
     <hr>
     <p class="date-article">{{ article[4] }}</p>
     <a href="/admin-modifier/{{article[2]}}">{{ article[0] }} {{ article[1] }}</a>
@@ -14,6 +15,17 @@
     <h4>Auteur: {{ article[3] }}</h4>
     <p>{{ article[5] }}</p>
     <br> {% endfor %}
+=======
+    <div class="article-list">
+        <hr>
+        <p class="date-article">{{ article[4] }}</p>
+        <h3>{{ article[0] }} {{ article[1] }}</h3>
+        <h4>Tag: {{ article[2] }}</h4>
+        <h4>Auteur: {{ article[3] }}</h4>
+        <p>{{ article[5] }}</p>
+        <br>
+    </div>{% endfor %}
+>>>>>>> e1e3ce75c33ff30b2ce5adf4b1d7c4f25538081d
 </div>
 
 {% endblock %}

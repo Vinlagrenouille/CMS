@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from flask import Flask
 from flask import render_template
 from flask import make_response
@@ -8,8 +9,27 @@ from flask import request
 from flask import redirect
 from flask import url_for
 from database import Database
+import sys  
+
+reload(sys)  
+sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
+
+def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
+    if len(idu) == 0:
+        erreur= "Vous devez mettre un identifiant unique, le prochain numéro, par exemple! "
+    if len(titre) == 0:
+        erreur= erreur + "Vous devez mettre un titre. "
+    if len(identifiant) == 0:
+        erreur= erreur + "Vous devez mettre un identifiant. "
+    if  len(auteur) == 0:
+        erreur= erreur + "Vous devez mettre un auteur. "
+    if len(date) == 0: 
+        erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
+    if len(paragraphe) == 0:
+        erreur= erreur + "Vous devez mettre un paragraphe."
+    return erreur
 
 
 def get_db():
@@ -68,23 +88,14 @@ def show_new_article_page():
 @app.route('/envoyer', methods=['GET','POST'])
 def envoyer():
     idu = request.form['idu']
-    titre = request.form['titre']   
+    titre = request.form['titre']
     identifiant = request.form['identifiant']
     auteur = request.form['auteur']
     date = request.form['date']
     paragraphe = request.form['paragraphe']
-    if len(idu) == 0:
-        return render_template('nouvelArticle.html', erreur="Vous devez mettre un identifiant unique, le prochain numéro, par exemple!")
-    elif len(titre) == 0:
-        return render_template('nouvelArticle.html', erreur="Vous devez mettre un titre")
-    elif len(identifiant) == 0:
-        return render_template('nouvelArticle.html', erreur="Vous devez mettre un identifiant")
-    elif  len(auteur) == 0:
-        return render_template('nouvelArticle.html', erreur="Vous devez mettre un auteur")
-    elif len(date) == 0: 
-        return render_template('nouvelArticle.html', erreur="Vous devez mettre une date au format AAAA-MM-JJ")
-    elif len(paragraphe) == 0:
-        return render_template('nouvelArticle.html', erreur="Vous devez mettre un paragraphe")
+    erreur = valider_form(idu, titre, identifiant, auteur, date, paragraphe)
+    if erreur != "":
+        return render_template('nouvelArticle.html', erreur=erreur)
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')

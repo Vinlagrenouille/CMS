@@ -1,3 +1,14 @@
 .row {
 	padding: 15px;
 }
+h1, h2, h3, h4 {
+}
+
+p {
+	font-size: 16px;
+}
+
+.date-article {
+	font-size: 0.9em;
+	text-align: left;
+}

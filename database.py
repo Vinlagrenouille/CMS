@@ -37,12 +37,6 @@ class Database:
         article = cursor.fetchone()
         return article
 
-    # def get_article(self):
-    #     cursor = self.get_connection().cursor()
-    #     cursor.execute("select * from article")
-    #     articles = cursor.fetchall()
-    #     return [article[0] for article in articles]
-
     def get_articles(self):
         cursor = self.get_connection().cursor()
         cursor.execute("select * from article")

@@ -4,7 +4,7 @@
 <div>
   {% if listArticles %}
   {% for article in listArticles %}
-  
+  <hr>
   <p>{{ article[0] }}</p>
   <p>ID : {{ article[1] }}</p>
   <p>Date : {{ article[2] }}</p>
@@ -12,7 +12,7 @@
   {% endfor %}
   
   {% else %}
-  
+  <hr>
   <p>Aucun article correspondant</p>
   <br/>
   <br/>

@@ -43,12 +43,19 @@ class Database:
         articles = cursor.fetchall()
         return articles
 
-    def get_max_id(self, idu):
+    def get_max_id(self):
         cursor = self.get_connection().cursor()
         cursor.execute("select max(id) from article")
         max_id = cursor.fetchone()
         return max_id
 
+    def id_exists(self, idu):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select * from article where id = :idu", {"idu":idu})
+        if cursor.fetchone() != None:
+            return True
+        else:
+            return False
 
     def get_5_articles(self):
         cursor = self.get_connection().cursor()

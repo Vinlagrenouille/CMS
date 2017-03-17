@@ -16,11 +16,17 @@ sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
 
+def prochain_id():
+    prochain = get_db().get_max_id()
+    return prochain
+
 def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
     erreur = ""
+    prochain = get_db().get_max_id()
     if len(idu) == 0 or len(idu) > 2000000000:
-        prochain = get_db().get_max_id(idu)
         erreur= "Vous devez mettre un identifiant unique, le prochain numéro qui est : " + str(prochain[0]+1) + " par exemple! "
+    if get_db().id_exists(idu):
+        erreur = erreur + "Votre identifiant existe dans la base de donnée, vous pouvez utiliser le prochain numéro qui est : " + str(prochain[0]+1) + ". "
     if len(titre) == 0:
         erreur= erreur + "Vous devez mettre un titre. "
     if len(titre) > 99:

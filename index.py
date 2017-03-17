@@ -112,6 +112,15 @@ def envoyer():
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')
     
+
+@app.route('/editer', methods=['GET', 'POST'])
+def editer():
+    titre = request.form['titre']
+    paragraphe = request.form['paragraphe']
+    identifiant = request.form['identifiant']
+    get_db().update_article(titre, paragraphe, identifiant)
+    return redirect('/form-merci')
+
     
 @app.route('/form-merci')
 def show_merci():
@@ -123,7 +132,7 @@ def show_modifie_article_page(identifiant):
     article = get_db().get_article(identifiant)
     if article is None:
         return render_template('404.html'), 404
-    return render_template('modifieArticle.html', article=article)
+    return render_template('modifieArticle.html', article=article, identifiant=identifiant)
 
 
 @app.errorhandler(404)

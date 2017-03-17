@@ -5,7 +5,7 @@
   {% if listArticles %}
   {% for article in listArticles %}
   <hr>
-  <a href="/article/{{article[1]}}">{{ article[0] }}</a>
+  <a href="/article/{{article[1]}}"><h2>{{ article[0] }}</h2></a>
   <p>Date : {{ article[2] }}</p>
   <br/>
   {% endfor %}
@@ -15,7 +15,7 @@
   <p>Aucun article correspondant</p>
   <br/>
   <br/>
-  <a href="/">Retour à l'accueil</a>
+  <a class="btn" href="/">Retour à l'accueil</a>
   
   {% endif %}
 </div>

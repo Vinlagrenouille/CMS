@@ -37,7 +37,7 @@
         {% if erreur and values %}
         {% set erreurs = erreur.split('; ') %}
         {% for erreur in erreurs %}
-        <p class="erreur">{{ erreur }}</p>
+        <p class="erreur" style="color:red;">{{ erreur }}</p>
         {% endfor %}
         <form action="/envoyer" method="post">
             <label for="idu"> Id unique : </label>

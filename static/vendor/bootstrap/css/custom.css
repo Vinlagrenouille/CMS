@@ -3,55 +3,51 @@
 }
 h1, h2, h3, h4 {
 }
-
 p {
 	font-size: 16px;
 }
-
 .date-article {
 	font-size: 0.9em;
 	text-align: left;
 }
-
-input[type="text"], textarea{
+input[type="text"], textarea {
 	min-width: 330px;
 	min-height: 50px;
 	font-size: 20px;
 }
-
 input:focus::-webkit-input-placeholder {
-    opacity: 0;
+	opacity: 0;
 }
 .form-new-article {
-	margin:30px auto;
+	margin: 30px auto;
 }
-
 .form-new-article input[type="text"], .form-new-article textarea {
 	width: 100%;
 }
-
 .article-list {
 	background-color: #fbfbfb;
 }
-hr	{
+hr {
 	margin-bottom: 5px;
+}
+p.erreur {
+	color:red;
 }
 
 /* Tiré de CSS3Buttongenerator.com */
 .btn {
-  -webkit-border-radius: 2;
-  -moz-border-radius: 2;
-  border-radius: 2px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 20px;
-  background: #3498db;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-  margin-bottom: 6px;
+	-webkit-border-radius: 2;
+	-moz-border-radius: 2;
+	border-radius: 2px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 20px;
+	background: #3498db;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+	margin-bottom: 6px;
 }
-
 .btn:hover {
-  background: #3cb0fd;
-  text-decoration: none;
+	background: #3cb0fd;
+	text-decoration: none;
 }

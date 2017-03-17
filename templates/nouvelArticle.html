@@ -33,8 +33,12 @@
             <input class="btn" type="submit" value="Soumettre" />
         </form>
         {% endif %}
+
         {% if erreur and values %}
-        <p>{{ erreur }}</p>
+        {% set erreurs = erreur.split('; ') %}
+        {% for erreur in erreurs %}
+        <p class="erreur">{{ erreur }}</p>
+        {% endfor %}
         <form action="/envoyer" method="post">
             <label for="idu"> Id unique : </label>
             <br/>

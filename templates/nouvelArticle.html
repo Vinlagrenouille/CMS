@@ -1,39 +1,39 @@
-{% extends "layout.html" %}
-{% block contenu %}
-
+{% extends "layout.html" %} {% block contenu %}
 <div>
-    {% if erreur %}
+    <h1>Écrire un nouvel article</h1>
+    <h3>Laissez courir votre inspiration tout en étant moins fantasque car il vous faut remplir tous les champs.</h3>
+    <div class="form-new-article">
+        {% if erreur %}
         <p style="color:#700">{{ erreur }}</p>
-    {% endif %}
-  <form action="/envoyer" method="post">
-    <label for="idu"> Id unique : </label>
-    <br/>
-    <input type="text" name="idu" placeholder="Ex : 69696"/>
-    <br/>
-    <label for="titre"> Titre : </label>
-    <br/>
-    <input type="text" name="titre" placeholder="Ex : Le codeur : chevalier volant"/>
-    <br/>
-    <label for="identifiant"> Identifiant : </label>
-    <br/>
-    <input type="text" name="identifiant" placeholder="codeur-chevalier-volant"/>
-    <br/>
-    <label for="auteur"> Auteur : </label>
-    <br/>
-    <input type="text" name="auteur" placeholder="Jean Bon"/>
-    <br/>
-    <label for="date"> Date de publication : </label>
-    <br/>
-    <input type="text" name="date" placeholder="2017-01-01"/>
-    <br/>
-    <label for="paragraphe"> Paragraphe : </label>
-    <br/>
-    <textarea rows="10" name="paragraphe" placeholder="Il était un temps..">
-    </textarea>
-    <br/>
-
-    <input type="submit" value="Soumettre"/>
-  </form>
+        {% endif %}
+        <form action="/envoyer" method="post">
+            <label for="idu"> Id unique : </label>
+            <br/>
+            <input type="text" name="idu" placeholder="Ex : 69696" />
+            <br/>
+            <label for="titre"> Titre : </label>
+            <br/>
+            <input type="text" name="titre" placeholder="Ex : Le codeur : chevalier volant" />
+            <br/>
+            <label for="identifiant"> Identifiant : </label>
+            <br/>
+            <input type="text" name="identifiant" placeholder="codeur-chevalier-volant" />
+            <br/>
+            <label for="auteur"> Auteur : </label>
+            <br/>
+            <input type="text" name="auteur" placeholder="Jean Bon" />
+            <br/>
+            <label for="date"> Date de publication : </label>
+            <br/>
+            <input type="text" name="date" placeholder="2017-01-01" />
+            <br/>
+            <label for="paragraphe"> Paragraphe : </label>
+            <br/>
+            <textarea rows="10" name="paragraphe" placeholder="Il était un temps..">
+            </textarea>
+            <br/>
+            <input type="submit" value="Soumettre" />
+        </form>
+    </div>
 </div>
-
 {% endblock %}

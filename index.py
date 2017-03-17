@@ -19,7 +19,8 @@ app = Flask(__name__)
 def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
     erreur = ""
     if len(idu) == 0 or len(idu) > 2000000000:
-        erreur= "Vous devez mettre un identifiant unique, le prochain numéro, par exemple! "
+        prochain = get_db().get_max_id(idu)
+        erreur= "Vous devez mettre un identifiant unique, le prochain numéro qui est : " + str(prochain[0]+1) + " par exemple! "
     if len(titre) == 0:
         erreur= erreur + "Vous devez mettre un titre. "
     if len(titre) > 99:
@@ -34,8 +35,8 @@ def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
         erreur= erreur + "Le nom de l'auteur est trop long. "
     if len(date) == 0: 
         erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
-    if date[4:-5] != "-" or date[8:-2] != "-":
-        erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
+    # if date[4:-5] != "-" or date[8:-2] != "-":
+    #     erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
     if len(paragraphe) == 0:
         erreur= erreur + "Vous devez mettre un paragraphe."
     if len(paragraphe) > 499:
@@ -105,17 +106,26 @@ def envoyer():
     date = request.form['date']
     paragraphe = request.form['paragraphe']
     values = idu, titre, identifiant, auteur, date, paragraphe
-    erreur = valider_form(*values)
+    erreur = valider_form(idu, titre, identifiant, auteur, date, paragraphe)
     if erreur != "":
         return render_template('nouvelArticle.html', erreur=erreur, values=values)
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')
     
+
+@app.route('/editer', methods=['GET', 'POST'])
+def editer():
+    titre = request.form['titre']
+    paragraphe = request.form['paragraphe']
+    identifiant = request.form['identifiant']
+    get_db().update_article(titre, paragraphe, identifiant)
+    return redirect('/form-merci')
+
     
 @app.route('/form-merci')
 def show_merci():
-	return render_template('form-merci.html')
+    return render_template('form-merci.html')
 
 
 @app.route('/admin-modifier/<identifiant>', methods=['GET', 'POST'])
@@ -123,7 +133,7 @@ def show_modifie_article_page(identifiant):
     article = get_db().get_article(identifiant)
     if article is None:
         return render_template('404.html'), 404
-    return render_template('modifieArticle.html', article=article)
+    return render_template('modifieArticle.html', article=article, identifiant=identifiant)
 
 
 @app.errorhandler(404)

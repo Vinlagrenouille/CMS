@@ -42,7 +42,9 @@ def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
     if len(identifiant) == 0:
         erreur= erreur + "Vous devez mettre un identifiant. "
     if len(identifiant) > 49:
-        erreur= erreur + "L'identifiant est trop long. "        
+        erreur= erreur + "L'identifiant est trop long. "
+    if get_db().identifiant_exists(identifiant):
+        erreur= erreur + "L'identifiant existe, veuillez en choisir un autre. "
     if  len(auteur) == 0:
         erreur= erreur + "Vous devez mettre un auteur. "
     if len(auteur) > 99:
@@ -50,7 +52,7 @@ def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
     if len(date) == 0 or valider_date(date) == False: 
         erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
     if len(paragraphe) == 0:
-        erreur= erreur + "Vous devez mettre un paragraphe."
+        erreur= erreur + "Vous devez mettre un paragraphe. "
     if len(paragraphe) > 499:
         erreur= erreur + "Le paragraphe est trop long. "
     return erreur

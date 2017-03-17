@@ -15,6 +15,8 @@ p {
 
 input[type="text"], textarea{
 	min-width: 330px;
+	min-height: 50px;
+	font-size: 20px;
 }
 
 input:focus::-webkit-input-placeholder {
@@ -29,4 +31,23 @@ input:focus::-webkit-input-placeholder {
 }
 hr	{
 	margin-bottom: 5px;
+}
+
+/* Tiré de CSS3Buttongenerator.com */
+.btn {
+  -webkit-border-radius: 2;
+  -moz-border-radius: 2;
+  border-radius: 2px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #3498db;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  margin-bottom: 3px;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  text-decoration: none;
 }

@@ -56,6 +56,14 @@ class Database:
             return True
         else:
             return False
+            
+    def identifiant_exists(self, identifiant):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select * from article where identifiant = :identifiant", {"identifiant":identifiant})
+        if cursor.fetchone() != None:
+            return True
+        else:
+            return False
 
     def get_5_articles(self):
         cursor = self.get_connection().cursor()

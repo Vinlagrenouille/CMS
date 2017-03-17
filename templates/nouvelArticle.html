@@ -34,7 +34,7 @@
         </form>
         {% endif %}
         {% if erreur and values %}
-        <p style="color:#700">{{ erreur }}</p>
+        <p>{{ erreur }}</p>
         <form action="/envoyer" method="post">
             <label for="idu"> Id unique : </label>
             <br/>

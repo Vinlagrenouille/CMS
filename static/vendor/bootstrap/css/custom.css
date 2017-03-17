@@ -26,6 +26,10 @@ input:focus::-webkit-input-placeholder {
 	margin:30px auto;
 }
 
+.form-new-article input[type="text"], .form-new-article textarea {
+	width: 100%;
+}
+
 .article-list {
 	background-color: #fbfbfb;
 }
@@ -44,7 +48,7 @@ hr	{
   background: #3498db;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
-  margin-bottom: 3px;
+  margin-bottom: 6px;
 }
 
 .btn:hover {

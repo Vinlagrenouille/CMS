@@ -18,18 +18,28 @@ app = Flask(__name__)
 
 def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
     erreur = ""
-    if len(idu) == 0:
+    if len(idu) == 0 or len(idu) > 2000000000:
         erreur= "Vous devez mettre un identifiant unique, le prochain numéro, par exemple! "
     if len(titre) == 0:
         erreur= erreur + "Vous devez mettre un titre. "
+    if len(titre) > 99:
+        erreur= erreur + "Le titre est trop long. "
     if len(identifiant) == 0:
         erreur= erreur + "Vous devez mettre un identifiant. "
+    if len(identifiant) > 49:
+        erreur= erreur + "L'identifiant est trop long. "        
     if  len(auteur) == 0:
         erreur= erreur + "Vous devez mettre un auteur. "
+    if len(auteur) > 99:
+        erreur= erreur + "Le nom de l'auteur est trop long. "
     if len(date) == 0: 
+        erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
+    if date[4:-5] != "-" or date[8:-2] != "-":
         erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
     if len(paragraphe) == 0:
         erreur= erreur + "Vous devez mettre un paragraphe."
+    if len(paragraphe) > 499:
+        erreur= erreur + "Le paragraphe est trop long. "
     return erreur
 
 

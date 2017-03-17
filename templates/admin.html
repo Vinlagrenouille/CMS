@@ -1,6 +1,20 @@
 {% extends "layout.html" %} {% block contenu %}
 <h1>Page du roi-rédacteur (l'admin quoi..)</h1>
 <a href="/admin-nouveau">Créer un article ici !!</a>
+<<<<<<< HEAD
+
+{%for article in articles %}
+<div class="article-list">
+    <hr>
+    <p class="date-article">{{ article[4] }}</p>
+    <a href="/admin-modifier/{{article[2]}}">{{ article[0] }} {{ article[1] }}</a>
+    <h4>Tag: {{ article[2] }}</h4>
+    <h4>Auteur: {{ article[3] }}</h4>
+    <p>{{ article[5] }}</p>
+    <br>
+</div>
+{% endfor %}
+=======
 <div>
     {%for article in articles %}
     <div class="article-list">
@@ -13,4 +27,5 @@
         <br>
     </div>{% endfor %}
 </div>
+>>>>>>> 0603872c9e8f1808568da18cea76f8d80b173068
 {% endblock %}

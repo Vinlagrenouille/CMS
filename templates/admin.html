@@ -7,11 +7,13 @@
 
 <div>
     {%for article in articles %}
-    <p>{{ article[0] }} {{ article[1] }} {{ article[4] }}</p>
-    <p>Tag: {{ article[2] }}</p>
-    <p>Auteur: {{ article[3] }}</p>
-    <p>{{ article[5] }}</p> <br>
-    {% endfor %}
+    <hr>
+    <p class="date-article">{{ article[4] }}</p>
+    <h3>{{ article[0] }} {{ article[1] }}</h3>
+    <h4>Tag: {{ article[2] }}</h4>
+    <h4>Auteur: {{ article[3] }}</h4>
+    <p>{{ article[5] }}</p>
+    <br> {% endfor %}
 </div>
 
 {% endblock %}

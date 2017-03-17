@@ -95,7 +95,7 @@ def envoyer():
     date = request.form['date']
     paragraphe = request.form['paragraphe']
     values = idu, titre, identifiant, auteur, date, paragraphe
-    erreur = valider_form(idu, titre, identifiant, auteur, date, paragraphe)
+    erreur = valider_form(*values)
     if erreur != "":
         return render_template('nouvelArticle.html', erreur=erreur, values=values)
     else:

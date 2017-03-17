@@ -33,7 +33,7 @@
             <input type="submit" value="Soumettre" />
         </form>
         {% endif %}
-        {% if erreur and values%}
+        {% if erreur and values %}
         <p style="color:#700">{{ erreur }}</p>
         <form action="/envoyer" method="post">
             <label for="idu"> Id unique : </label>

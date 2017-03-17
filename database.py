@@ -33,7 +33,7 @@ class Database:
 
     def get_article(self, identifiant):
         cursor = self.get_connection().cursor()
-        cursor.execute("select * from article where identifiant = :identifiant", {"identifiant":identifiant})
+        cursor.execute("select * from article where identifiant = :identifiant", {"identifiant": identifiant})
         article = cursor.fetchone()
         return article
 
@@ -51,15 +51,15 @@ class Database:
 
     def id_exists(self, idu):
         cursor = self.get_connection().cursor()
-        cursor.execute("select * from article where id = :idu", {"idu":idu})
+        cursor.execute("select * from article where id = :idu", {"idu": idu})
         if cursor.fetchone() != None:
             return True
         else:
             return False
-            
+
     def identifiant_exists(self, identifiant):
         cursor = self.get_connection().cursor()
-        cursor.execute("select * from article where identifiant = :identifiant", {"identifiant":identifiant})
+        cursor.execute("select * from article where identifiant = :identifiant", {"identifiant": identifiant})
         if cursor.fetchone() != None:
             return True
         else:
@@ -73,18 +73,24 @@ class Database:
 
     def update_article(self, titre, paragraphe, identifiant):
         cursor = self.get_connection().cursor()
-        cursor.execute("update article set titre = :titre, paragraphe = :paragraphe where identifiant = :identifiant", {"titre":titre, "paragraphe":paragraphe, "identifiant":identifiant})
+        cursor.execute("update article set titre = :titre, paragraphe = :paragraphe where identifiant = :identifiant",
+                       {"titre": titre, "paragraphe": paragraphe, "identifiant": identifiant})
         self.get_connection().commit()
         return
 
     def new_article(self, idu, titre, identifiant, auteur, date_publication, paragraphe):
         cursor = self.get_connection().cursor()
-        cursor.execute("insert into article values(:idu, :titre, :identifiant, :auteur, :date_publication, :paragraphe)", {"idu":idu, "titre":titre, "identifiant":identifiant, "auteur":auteur, "date_publication":date_publication, "paragraphe":paragraphe})
+        cursor.execute(
+            "insert into article values(:idu, :titre, :identifiant, :auteur, :date_publication, :paragraphe)",
+            {"idu": idu, "titre": titre, "identifiant": identifiant, "auteur": auteur,
+             "date_publication": date_publication, "paragraphe": paragraphe})
         self.get_connection().commit()
         return
 
     def recherche(self, text):
         cursor = self.get_connection().cursor()
-        cursor.execute("select titre, identifiant, date_publication from article where titre like '%' || :text || '%' or  paragraphe like '%' || :text || '%'", {"text":text})
+        cursor.execute(
+            "select titre, identifiant, date_publication from article where titre like '%' || :text || '%' or  paragraphe like '%' || :text || '%'",
+            {"text": text})
         listArticles = cursor.fetchall()
         return listArticles

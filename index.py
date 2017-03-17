@@ -10,16 +10,18 @@ from flask import redirect
 from flask import url_for
 from database import Database
 import datetime
-import sys  
+import sys
 
-reload(sys)  
+reload(sys)
 sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
 
+
 def prochain_id():
     prochain = get_db().get_max_id()
     return prochain
+
 
 def valider_date(date):
     try:
@@ -28,33 +30,36 @@ def valider_date(date):
     except ValueError:
         return False
 
+
 def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
     erreur = ""
     prochain = get_db().get_max_id()
     if len(idu) == 0 or len(idu) > 2000000000:
-        erreur= "Vous devez mettre un identifiant unique, le prochain numéro qui est : " + str(prochain[0]+1) + " par exemple!; "
+        erreur = "Vous devez mettre un identifiant unique, le prochain numéro qui est : " + str(
+            prochain[0] + 1) + " par exemple!; "
     if get_db().id_exists(idu):
-        erreur = erreur + "Votre identifiant existe dans la base de donnée, vous pouvez utiliser le prochain numéro qui est : " + str(prochain[0]+1) + ".; "
+        erreur = erreur + "Votre identifiant existe dans la base de donnée, vous pouvez utiliser le prochain numéro qui est : " + str(
+            prochain[0] + 1) + ".; "
     if len(titre) == 0:
-        erreur= erreur + "Vous devez mettre un titre.; "
+        erreur = erreur + "Vous devez mettre un titre.; "
     if len(titre) > 99:
-        erreur= erreur + "Le titre est trop long.; "
+        erreur = erreur + "Le titre est trop long.; "
     if len(identifiant) == 0:
-        erreur= erreur + "Vous devez mettre un identifiant.; "
+        erreur = erreur + "Vous devez mettre un identifiant.; "
     if len(identifiant) > 49:
-        erreur= erreur + "L'identifiant est trop long.; "
+        erreur = erreur + "L'identifiant est trop long.; "
     if get_db().identifiant_exists(identifiant):
-        erreur= erreur + "L'identifiant existe, veuillez en choisir un autre.; "
-    if  len(auteur) == 0:
-        erreur= erreur + "Vous devez mettre un auteur.; "
+        erreur = erreur + "L'identifiant existe, veuillez en choisir un autre.; "
+    if len(auteur) == 0:
+        erreur = erreur + "Vous devez mettre un auteur.; "
     if len(auteur) > 99:
-        erreur= erreur + "Le nom de l'auteur est trop long.; "
-    if len(date) == 0 or valider_date(date) == False: 
-        erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ.; "
+        erreur = erreur + "Le nom de l'auteur est trop long.; "
+    if len(date) == 0 or valider_date(date) == False:
+        erreur = erreur + "Vous devez mettre une date au format AAAA-MM-JJ.; "
     if len(paragraphe) == 0:
-        erreur= erreur + "Vous devez mettre un paragraphe.; "
+        erreur = erreur + "Vous devez mettre un paragraphe.; "
     if len(paragraphe) > 499:
-        erreur= erreur + "Le paragraphe est trop long.; "
+        erreur = erreur + "Le paragraphe est trop long.; "
     return erreur
 
 
@@ -84,6 +89,7 @@ def show_result():
     listArticles = get_db().recherche(recherche)
     return render_template('resultat.html', listArticles=listArticles)
 
+
 @app.route('/recherche', methods=['POST'])
 def donnees_recherche():
     recherche = request.form['recherche']
@@ -111,7 +117,7 @@ def show_new_article_page():
     return render_template('nouvelArticle.html')
 
 
-@app.route('/envoyer', methods=['GET','POST'])
+@app.route('/envoyer', methods=['GET', 'POST'])
 def envoyer():
     idu = request.form['idu']
     titre = request.form['titre']
@@ -126,7 +132,7 @@ def envoyer():
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')
-    
+
 
 @app.route('/editer', methods=['GET', 'POST'])
 def editer():
@@ -136,7 +142,7 @@ def editer():
     get_db().update_article(titre, paragraphe, identifiant)
     return redirect('/form-merci')
 
-    
+
 @app.route('/form-merci')
 def show_merci():
     return render_template('form-merci.html')

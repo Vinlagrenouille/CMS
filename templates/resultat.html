@@ -5,8 +5,7 @@
   {% if listArticles %}
   {% for article in listArticles %}
   <hr>
-  <p>{{ article[0] }}</p>
-  <p>ID : {{ article[1] }}</p>
+  <a href="/article/{{article[1]}}">{{ article[0] }}</a>
   <p>Date : {{ article[2] }}</p>
   <br/>
   {% endfor %}

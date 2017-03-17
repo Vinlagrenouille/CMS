@@ -64,6 +64,7 @@ def show_admin_page():
 def show_new_article_page():
     return render_template('nouvelArticle.html')
 
+
 @app.route('/envoyer', methods=['GET','POST'])
 def envoyer():
     idu = request.form['idu']
@@ -87,7 +88,8 @@ def envoyer():
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
         return redirect('/form-merci')
-
+    
+    
 @app.route('/form-merci')
 def show_merci():
 	return render_template('form-merci.html')

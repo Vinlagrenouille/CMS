@@ -1,6 +1,16 @@
 {% extends "layout.html" %}
 {% block contenu %}
 
-
+<div>
+  <form action="/editer" method="post">
+    <label for="titre"> Titre : </label>
+    <br/>
+    <textarea name="titre">{{article[1]}}</textarea>
+    <br/>
+    <label for="paragraphe"> Paragraphe : </label>
+    <br/>
+    <textarea rows="10" name="paragraphe">{{article[5]}}</textarea>
+ </form>
+</div>
 
 {% endblock %}

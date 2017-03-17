@@ -9,6 +9,7 @@ from flask import request
 from flask import redirect
 from flask import url_for
 from database import Database
+import datetime
 import sys  
 
 reload(sys)  
@@ -19,6 +20,13 @@ app = Flask(__name__)
 def prochain_id():
     prochain = get_db().get_max_id()
     return prochain
+
+def valider_date(date):
+    try:
+        datetime.datetime.strptime(date, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
 
 def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
     erreur = ""
@@ -39,10 +47,8 @@ def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
         erreur= erreur + "Vous devez mettre un auteur. "
     if len(auteur) > 99:
         erreur= erreur + "Le nom de l'auteur est trop long. "
-    if len(date) == 0: 
+    if len(date) == 0 or valider_date(date) == False: 
         erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
-    # if date[4:-5] != "-" or date[8:-2] != "-":
-    #     erreur= erreur + "Vous devez mettre une date au format AAAA-MM-JJ. "
     if len(paragraphe) == 0:
         erreur= erreur + "Vous devez mettre un paragraphe."
     if len(paragraphe) > 499:

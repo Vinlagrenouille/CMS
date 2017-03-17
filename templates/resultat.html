@@ -2,7 +2,7 @@
 {% block contenu %}
 
 <div>
-  {% if listArticles is not defined %}
+  {% if listArticles %}
   {% for article in listArticles %}
   <hr>
   <p>{{ article[0] }}</p>

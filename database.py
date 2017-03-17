@@ -51,7 +51,7 @@ class Database:
 
     def update_article(self, titre, paragraphe, identifiant):
         cursor = self.get_connection().cursor()
-        cursor.execute("update article set titre = :titre and paragraphe = :paragraphe where identifiant = :identifiant", {"titre":titre, "paragraphe":paragraphe, "identifiant":idenfiant})
+        cursor.execute("update article set titre = :titre, paragraphe = :paragraphe where identifiant = :identifiant", {"titre":titre, "paragraphe":paragraphe, "identifiant":identifiant})
         self.get_connection().commit()
         return
 

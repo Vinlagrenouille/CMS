@@ -52,11 +52,13 @@ class Database:
     def update_article(self, titre, paragraphe, identifiant):
         cursor = self.get_connection().cursor()
         cursor.execute("update article set titre = :titre and paragraphe = :paragraphe where identifiant = :identifiant", {"titre":titre, "paragraphe":paragraphe, "identifiant":idenfiant})
+        cursor.commit()
         return
 
     def new_article(self, idu, titre, identifiant, auteur, date_publication, paragraphe):
         cursor = self.get_connection().cursor()
         cursor.execute("insert into article values(:idu, :titre, :identifiant, :auteur, :date_publication, :paragraphe)", {"idu":idu, "titre":titre, "identifiant":identifiant, "auteur":auteur, "date_publication":date_publication, "paragraphe":paragraphe})
+        cursor.commit()
         return
 
     def recherche(self, text):

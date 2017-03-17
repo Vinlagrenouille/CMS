@@ -74,15 +74,15 @@ def envoyer():
     paragraphe = request.form['paragraphe']
     if len(idu) == 0:
         return render_template('nouvelArticle.html', erreur="Vous devez mettre un identifiant unique, le prochain numéro, par exemple!")
-    elif len(titre) == 0:
+    if len(titre) == 0:
         return render_template('nouvelArticle.html', erreur="Vous devez mettre un titre")
-    elif len(identifiant) == 0:
+    if len(identifiant) == 0:
         return render_template('nouvelArticle.html', erreur="Vous devez mettre un identifiant")
-    elif  len(auteur) == 0:
+    if  len(auteur) == 0:
         return render_template('nouvelArticle.html', erreur="Vous devez mettre un auteur")
-    elif len(date) == 0: 
+    if len(date) == 0: 
         return render_template('nouvelArticle.html', erreur="Vous devez mettre une date au format AAAA-MM-JJ")
-    elif len(paragraphe) == 0:
+    if len(paragraphe) == 0:
         return render_template('nouvelArticle.html', erreur="Vous devez mettre un paragraphe")
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)

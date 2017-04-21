@@ -219,16 +219,12 @@ def logout():
         get_db().delete_session(id_session)
     return redirect("/")
 
-@app.route('/api/articles/', methods=["GET", "POST"])
+@app.route('/api/articles/', methods=["GET"])
 def liste_articles():
     if request.method == "GET":
         articles = get_db().get_articles()
         data = [{"titre": each[1], "identifiant": 'http://127.0.0.1:5000/article/'+each[2], "auteur": each[3]} for each in articles]
         return jsonify(data)
-    else:
-        data = request.get_json()
-        get_db().new_article(data[titre, identifiant, auteur])
-        return "", 201
 
 @app.route('/api/articles/<identifiant>', methods=["GET"])
 def get_all_data_article(identifiant):
@@ -237,8 +233,17 @@ def get_all_data_article(identifiant):
         return render_template('404.html'), 404
     else:
         data = [{"id": article[0], "titre": article[1], "identifiant": article[2], "auteur": article[3], "date_publication": article[4], "paragraphe": article[5]}]
-        return jsonify(data)
-    return "", 201        
+        return jsonify(data)   
+
+@app.route('/api/articles/nouveau/', methods=["POST"])
+def nouvel_article():
+    data = request.get_json()
+    if get_db().identifiant_exists(data[{"identifiant"}]) == True or not request.json:
+        return "", 400
+    else:
+        get_db().new_article(data[{"id", "titre", "identifiant", "auteur", "date_publication", "paragraphe"}])
+        print json_data
+        return "", 201
 
 def is_authenticated(session):
     return "id" in session
@@ -250,8 +255,8 @@ def send_unauthorized():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
-
+    return render_template('404.html'), 40
+4
 
 app.secret_key = "H\x9e\xbf3?\x9fR\xea\x9a\xa4dte{\xbfLB]\xb2\xa1\xa4\x1f3&"
 

@@ -5,6 +5,7 @@ from flask import Flask
 from flask import render_template
 from flask import make_response
 from flask import g
+from flask import jsonify
 from flask import request
 from flask import redirect
 from flask import url_for
@@ -218,6 +219,17 @@ def logout():
         get_db().delete_session(id_session)
     return redirect("/")
 
+@app.route('/api/articles/', methods=["GET", "POST"])
+def liste_articles():
+    if request.method == "GET":
+        articles = get_db().get_articles()
+        data = [{"id": each[0], "titre": each[1], "identifiant": each[2], "auteur": each[3], "date_publication": each[4], "paragraphe": each[5]} for each in articles]
+        return jsonify(data)
+    else:
+        data = request.get_json()
+        get_db().new_article(data[idu, titre, identifiant, auteur, date_publication, paragraphe])
+        return "", 201
+
 def is_authenticated(session):
     return "id" in session
 
@@ -229,7 +241,6 @@ def send_unauthorized():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
 
 
 app.secret_key = "H\x9e\xbf3?\x9fR\xea\x9a\xa4dte{\xbfLB]\xb2\xa1\xa4\x1f3&"

@@ -197,8 +197,41 @@ def send_recuperation_mail():
 def show_reinit_thanks_page():
     return render_template("reinit-merci.html")
 
-@app.route('/changer-mot-de-passe/<token>', methods=["GET", "POST"])
+@app.route('/inviter-un-admin')
+@authentication_required
+def show_invite_page():
+    return render_template("inviterAdmin.html")
+
+@app.route('/invitation', methods=['POST'])
+@authentication_required
+def invite_someone():
+    email = request.form['email']
+    if email == "":
+        return redirect('/inviter-un-admin')
+    token = uuid.uuid4().hex
+    get_db().set_token_to_invite(token, email)
+    
+    gmail.send_mail_invite(email, token)
+    
+    return redirect('/admin')
+                            
+@app.route('/inscription/<token>', methods=["GET", "POST"])
 def change_password(token):
+    if request.method == "GET":
+        return render_template("inscription.html")
+    else:
+        utilisateur = request.form["utilisateur"]
+        mdp = request.form["mdp"]
+        if mdp == "" or utilisateur == "":
+            return render_template("inscription.html", error="Tous les champs sont obligatoires.")
+        salt = uuid.uuid4().hex
+        hashed = hashlib.sha512(mdp+salt).hexdigest()
+        get_db().confirm_inscription(token, utilisateur, salt, hashed)
+        
+        return redirect("/connexion");
+                                                                    
+@app.route('/changer-mot-de-passe/<token>', methods=["GET", "POST"])
+def new_password(token):
     if request.method == "GET":
         return render_template("nouveauMDP.html")
     else:

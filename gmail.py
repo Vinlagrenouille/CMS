@@ -42,3 +42,25 @@ def send_mail_reinit(destination_address, token):
     text = msg.as_string()
     server.sendmail(source_address, destination_address, text)
     server.quit()
+
+def send_mail_invite(destination_address, token):
+
+    source_address = info_mail.mail
+    body = "Rendez-vous à cette adresse pour vous inscrire en tant qu'admin sur CMS TP2 - localhost:5000/inscription/"+token
+    subject = "Invitation au rôle d'admin CMS TP2"
+    
+    msg = MIMEMultipart()
+    msg['Subject'] = subject
+    msg['From'] = source_address
+    msg['To'] = destination_address
+    
+    msg.attach(MIMEText(body, 'plain'))
+    
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(source_address, info_mail.mdp)
+    text = msg.as_string()
+    server.sendmail(source_address, destination_address, text)
+    server.quit()
+                                                        
+                                                            

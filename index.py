@@ -55,12 +55,10 @@ def authentication_required(f):
 def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
     erreur = ""
     prochain = get_db().get_max_id()
-    if len(idu) == 0 or len(idu) > 2000000000:
-        erreur = "Vous devez mettre un identifiant unique, le prochain numéro qui est : " + str(
-            prochain[0] + 1) + " par exemple!; "
+    if idu == 0 or idu > 2000000000:
+        erreur = "Problème d'identifiant, contactez votre administrateur (trop grand)"
     if get_db().id_exists(idu):
-        erreur = erreur + "Votre identifiant existe dans la base de donnée, vous pouvez utiliser le prochain numéro qui est : " + str(
-            prochain[0] + 1) + ".; "
+        erreur = erreur + "Problème d'identifiant, contactez votre administrateur (existe déjà)"
     if len(titre) == 0:
         erreur = erreur + "Vous devez mettre un titre.; "
     if len(titre) > 99:
@@ -143,7 +141,7 @@ def show_new_article_page():
 @app.route('/envoyer', methods=['GET', 'POST'])
 @authentication_required
 def envoyer():
-    idu = request.form['idu']
+    idu = get_db().get_max_id()[0] + 1
     titre = request.form['titre']
     identifiant = request.form['identifiant']
     auteur = request.form['auteur']
@@ -155,7 +153,7 @@ def envoyer():
         return render_template('nouvelArticle.html', erreur=erreur, values=values)
     else:
         get_db().new_article(idu, titre, identifiant, auteur, date, paragraphe)
-        return redirect('/form-merci')
+        return redirect('/form-merci'), 201
 
 
 @app.route('/editer', methods=['GET', 'POST'])

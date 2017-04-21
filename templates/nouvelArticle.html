@@ -6,10 +6,6 @@
     <div class="form-new-article">
         {% if not erreur or not values %}
         <form action="/envoyer" method="post">
-            <label for="idu"> Id unique : </label>
-            <br/>
-            <input type="text" name="idu" placeholder="Ex : 69696" />
-            <br/>
             <label for="titre"> Titre : </label>
             <br/>
             <input onchange="onTitleChange();" type="text" name="titre" id="titre" placeholder="Ex : Le codeur : chevalier volant" />
@@ -41,10 +37,6 @@
         <p class="erreur" style="color:red;">{{ erreur }}</p>
         {% endfor %}
         <form action="/envoyer" method="post">
-            <label for="idu"> Id unique : </label>
-            <br/>
-            <input type="text" name="idu" placeholder="Ex : 69696" value="{{values[0]}}" />
-            <br/>
             <label for="titre"> Titre : </label>
             <br/>
             <input type="text" name="titre" id="titre" placeholder="Ex : Le codeur : chevalier volant" onchange="onTitleChange();" value="{{values[1]}}"  />

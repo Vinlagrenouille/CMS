@@ -1,4 +1,5 @@
 {% extends "layout.html" %} {% block contenu %}
+<script src="/static/js/script.js"></script>
 <div>
     <h1>Écrire un nouvel article</h1>
     <h3>Laissez courir votre inspiration tout en étant moins fantasque car il vous faut remplir tous les champs.</h3>
@@ -11,11 +12,11 @@
             <br/>
             <label for="titre"> Titre : </label>
             <br/>
-            <input type="text" name="titre" placeholder="Ex : Le codeur : chevalier volant" />
+            <input onchange="onTitleChange();" type="text" name="titre" id="titre" placeholder="Ex : Le codeur : chevalier volant" />
             <br/>
             <label for="identifiant"> Identifiant : </label>
             <br/>
-            <input type="text" name="identifiant" placeholder="codeur-chevalier-volant" />
+            <input type="text" name="identifiant" id="identifiant" placeholder="codeur-chevalier-volant" />
             <br/>
             <label for="auteur"> Auteur : </label>
             <br/>
@@ -46,11 +47,11 @@
             <br/>
             <label for="titre"> Titre : </label>
             <br/>
-            <input type="text" name="titre" placeholder="Ex : Le codeur : chevalier volant" value="{{values[1]}}"  />
+            <input type="text" name="titre" id="titre" placeholder="Ex : Le codeur : chevalier volant" onchange="onTitleChange();" value="{{values[1]}}"  />
             <br/>
             <label for="identifiant"> Identifiant : </label>
             <br/>
-            <input type="text" name="identifiant" placeholder="codeur-chevalier-volant" value="{{values[2]}}" />
+            <input type="text" name="identifiant" id="identifiant" placeholder="codeur-chevalier-volant" value="{{values[2]}}" />
             <br/>
             <label for="auteur"> Auteur : </label>
             <br/>

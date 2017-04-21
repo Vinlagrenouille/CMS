@@ -106,6 +106,16 @@ class Database:
         connection = self.get_connection()
         connection.execute('update users set token=:token where email=:email', {"token":token, "email":email})
         connection.commit()
+
+    def set_token_to_invite(self, token, email):
+        connection = self.get_connection()
+        connection.execute('insert into users(email, token) values(?, ?)', (email, token))
+        connection.commit()
+
+    def confirm_inscription(self, token, utilisateur, salt, hash):
+        connection = self.get_connection()
+        connection.execute('update users set utilisateur = :utilisateur, salt = :salt, hash = :hash, token = "" where token = :token', {"utilisateur":utilisateur, "salt":salt, "hash":hash, "token":token})
+        connection.commit()
         
     def change_password(self, token, salt, hash):
         connection = self.get_connection()

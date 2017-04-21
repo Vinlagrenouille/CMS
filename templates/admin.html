@@ -1,6 +1,8 @@
 {% extends "layout.html" %} {% block contenu %}
 <h1>Page du roi-rédacteur (l'admin quoi..)</h1>
 <a class="btn" href="/admin-nouveau">Créer un article ici !!</a>
+<br/>
+<a class="btn" href="/inviter-un-admin">Inviter un admin</a>
 
 {%for article in articles %}
 <div class="article-list">

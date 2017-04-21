@@ -12,11 +12,13 @@ from flask import redirect
 from flask import url_for
 from flask import session
 from flask import Response
+from random import randint
 from database import Database
 import datetime
 import json
 import sys
 import hashlib
+import unicodedata
 import uuid
 from functools import wraps
 import gmail
@@ -265,7 +267,7 @@ def liste_articles():
         data = [{"titre": each[1], "identifiant": 'http://127.0.0.1:5000/article/'+each[2], "auteur": each[3]} for each in articles]
         return jsonify(data)
 
-@app.route('/api/articles/<identifiant>', methods=["GET"])
+@app.route('/api/article/<identifiant>', methods=["GET"])
 def get_all_data_article(identifiant):
     article = get_db().get_article(identifiant)
     if article is None:
@@ -274,7 +276,7 @@ def get_all_data_article(identifiant):
         data = [{"id": article[0], "titre": article[1], "identifiant": article[2], "auteur": article[3], "date_publication": article[4], "paragraphe": article[5]}]
         return jsonify(data)   
 
-@app.route('/api/articles/nouveau/', methods=["POST"])
+@app.route('/api/article/nouveau/', methods=["POST"])
 def nouvel_article():
     data = request.get_json()
     data_en_json = json.loads(data)
@@ -283,6 +285,18 @@ def nouvel_article():
     else:
         article = get_db().new_article(data_en_json['id'], data_en_json['titre'], data_en_json['identifiant'], data_en_json['auteur'], data_en_json['date_publication'], data_en_json['paragraphe'])
     return "", 201
+
+@app.route('/batir-ident/<identifiant>', methods=["GET"])
+def verifier_identifiant(identifiant):
+    identifiant_existe = get_db().identifiant_exists(identifiant)
+    if identifiant_existe == True:
+        return identifiant + str(randint(0,9999))
+    else:
+        return enlever_accents(identifiant)
+
+def enlever_accents(identifiant):
+    string_replaced = unicodedata.normalize('NFKD', identifiant).encode('ASCII', 'ignore')
+    return string_replaced
 
 def is_authenticated(session):
     return "id" in session

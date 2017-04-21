@@ -223,12 +223,22 @@ def logout():
 def liste_articles():
     if request.method == "GET":
         articles = get_db().get_articles()
-        data = [{"id": each[0], "titre": each[1], "identifiant": each[2], "auteur": each[3], "date_publication": each[4], "paragraphe": each[5]} for each in articles]
+        data = [{"titre": each[1], "identifiant": 'http://127.0.0.1:5000/article/'+each[2], "auteur": each[3]} for each in articles]
         return jsonify(data)
     else:
         data = request.get_json()
-        get_db().new_article(data[idu, titre, identifiant, auteur, date_publication, paragraphe])
+        get_db().new_article(data[titre, identifiant, auteur])
         return "", 201
+
+@app.route('/api/articles/<identifiant>', methods=["GET"])
+def get_all_data_article(identifiant):
+    article = get_db().get_article(identifiant)
+    if article is None:
+        return render_template('404.html'), 404
+    else:
+        data = [{"id": article[0], "titre": article[1], "identifiant": article[2], "auteur": article[3], "date_publication": article[4], "paragraphe": article[5]}]
+        return jsonify(data)
+    return "", 201        
 
 def is_authenticated(session):
     return "id" in session

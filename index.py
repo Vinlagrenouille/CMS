@@ -13,6 +13,7 @@ from flask import session
 from flask import Response
 from database import Database
 import datetime
+import json
 import sys
 import hashlib
 import uuid
@@ -237,13 +238,10 @@ def get_all_data_article(identifiant):
 
 @app.route('/api/articles/nouveau/', methods=["POST"])
 def nouvel_article():
-    data = request.get_json()
-    if get_db().identifiant_exists(data[{"identifiant"}]) == True or not request.json:
-        return "", 400
-    else:
-        get_db().new_article(data[{"id", "titre", "identifiant", "auteur", "date_publication", "paragraphe"}])
-        print json_data
-        return "", 201
+    data = request.get_json(force=True)
+    data_en_json = json.loads(data)
+    article = get_db().new_article(data_en_json['id'], data_en_json['titre'], data_en_json['identifiant'], data_en_json['auteur'], data_en_json['date_publication'], data_en_json['paragraphe'])
+    return "", 201
 
 def is_authenticated(session):
     return "id" in session

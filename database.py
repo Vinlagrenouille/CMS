@@ -97,9 +97,19 @@ class Database:
 
     def create_user(self, username, email, salt, hashed_password):
         connection = self.get_connection()
-        connection.execute(("insert into users(utilisateur, salt, hash)"
-                            " values(?, ?, ?)"), (username, salt,
+        connection.execute(("insert into users(utilisateur, email, salt, hash)"
+                            " values(?, ?, ?, ?)"), (username, email, salt,
                                                      hashed_password))
+        connection.commit()
+
+    def set_token_for_new_pwd(self, token, email):
+        connection = self.get_connection()
+        connection.execute('update users set token=:token where email=:email', {"token":token, "email":email})
+        connection.commit()
+        
+    def change_password(self, token, salt, hash):
+        connection = self.get_connection()
+        connection.execute("update users set hash = :hash, salt = :salt, token = '' where token = :token", {"hash":hash, "salt":salt, "token":token})
         connection.commit()
     
     def get_user_login_info(self, username):

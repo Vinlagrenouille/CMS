@@ -17,7 +17,7 @@ import sys
 import hashlib
 import uuid
 from functools import wraps
-
+import gmail
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -175,7 +175,45 @@ def show_modifie_article_page(identifiant):
         return render_template('404.html'), 404
     return render_template('modifieArticle.html', article=article, identifiant=identifiant)
 
-@app.route('/connexion', methods=['GET', 'POST'])
+@app.route('/recuperation')
+def show_recuperation_page():
+    return render_template('reinitialiserMDP.html')
+
+@app.route('/reinitialisation', methods=['POST'])
+def send_recuperation_mail():
+    email = request.form['email']
+    if email == "":
+        return redirect('/recuperation')
+    token = uuid.uuid4().hex
+    get_db().set_token_for_new_pwd(token, email)
+
+    gmail.send_mail_reinit(email, token)
+    
+    return redirect('/reinit-merci')
+
+@app.route('/reinit-merci')
+def show_reinit_thanks_page():
+    return render_template("reinit-merci.html")
+
+@app.route('/changer-mot-de-passe/<token>', methods=["GET", "POST"])
+def change_password(token):
+    if request.method == "GET":
+        return render_template("nouveauMDP.html")
+    else:
+        mdp = request.form["mdp"]
+        if mdp == "":
+            return render_template("nouveauMDP.html", error="Veuillez rentrer un mot de passe")
+        salt = uuid.uuid4().hex
+        hashed = hashlib.sha512(mdp+salt).hexdigest()
+        get_db().change_password(token, salt, hashed)
+
+        return redirect("/nouveau-mot-de-passe-valide");
+
+@app.route('/nouveau-mot-de-passe-valide')
+def show_pwd_valid():
+    return render_template("confirm-merci.html")
+
+@app.route('/connexion')
 def show_connexion_page():
     if "id" in session:
         return redirect("/admin")
@@ -187,7 +225,6 @@ def connect():
     mdp = request.form['mdp']
 
     if utilisateur == "" or mdp == "":
-        print "pas complet"
         return redirect("/connexion")
     
     user = get_db().get_user_login_info(utilisateur)

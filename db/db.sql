@@ -19,9 +19,14 @@ insert into article values (8, 'Être un beau programmeur', 'etre-beau-programme
 create table users (
   id integer primary key autoincrement,
   utilisateur varchar(25),
+  email varchar(100),
   salt varchar(32),
-  hash varchar(128)
+  hash varchar(128),
+  token varchar(32)
   );
+
+-- Petite question à l'attention du correcteur : dans le cadre d'une inscription et d'une récupération
+-- avec un système de mail et de token, faut-il un token pour chaque, ou un seul token pour les deux ?
 
 create table sessions (
   id integer primary key,
@@ -29,4 +34,6 @@ create table sessions (
   utilisateur varchar(25)
   );
 
-insert into users(utilisateur, salt, hash) values ('correcteur', 'e56373736e7646bd85213083ce9f10bf', 'f265b8a63f4a37faf85088030fb34ddb245e194ca1793965225789a4165d0c48fb6dde55ebba6ee85fd3acbfd5295b322d425c28fee79fa64d7be8ef6fe19a99');
+insert into users(utilisateur, email, salt, hash) values ('correcteur', 'contact.lagrenouille@gmail.com',
+							 		'e56373736e7646bd85213083ce9f10bf',
+									'f265b8a63f4a37faf85088030fb34ddb245e194ca1793965225789a4165d0c48fb6dde55ebba6ee85fd3acbfd5295b322d425c28fee79fa64d7be8ef6fe19a99');

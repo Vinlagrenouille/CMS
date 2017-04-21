@@ -8,9 +8,15 @@ from flask import g
 from flask import request
 from flask import redirect
 from flask import url_for
+from flask import session
+from flask import Response
 from database import Database
 import datetime
 import sys
+import hashlib
+import uuid
+from functools import wraps
+
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -29,6 +35,14 @@ def valider_date(date):
         return True
     except ValueError:
         return False
+
+def authentication_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not is_authenticated(session):
+            return render_template("401.html"), 401
+        return f(*args, **kwargs)
+    return decorated
 
 
 def valider_form(idu, titre, identifiant, auteur, date, paragraphe):
@@ -107,17 +121,20 @@ def show_article(identifiant):
 
 
 @app.route('/admin')
+@authentication_required
 def show_admin_page():
     articles = get_db().get_articles()
     return render_template('admin.html', articles=articles)
 
 
 @app.route('/admin-nouveau')
+@authentication_required
 def show_new_article_page():
     return render_template('nouvelArticle.html')
 
 
 @app.route('/envoyer', methods=['GET', 'POST'])
+@authentication_required
 def envoyer():
     idu = request.form['idu']
     titre = request.form['titre']
@@ -135,6 +152,7 @@ def envoyer():
 
 
 @app.route('/editer', methods=['GET', 'POST'])
+@authentication_required
 def editer():
     titre = request.form['titre']
     paragraphe = request.form['paragraphe']
@@ -149,13 +167,70 @@ def show_merci():
 
 
 @app.route('/admin-modifier/<identifiant>', methods=['GET', 'POST'])
+@authentication_required
 def show_modifie_article_page(identifiant):
     article = get_db().get_article(identifiant)
     if article is None:
         return render_template('404.html'), 404
     return render_template('modifieArticle.html', article=article, identifiant=identifiant)
 
+@app.route('/connexion', methods=['GET', 'POST'])
+def show_connexion_page():
+    if "id" in session:
+        return redirect("/admin")
+    return render_template('connexion.html')
+    
+@app.route('/validation', methods=['POST'])
+def connect():
+    utilisateur = request.form['utilisateur']
+    mdp = request.form['mdp']
+
+    if utilisateur == "" or mdp == "":
+        print "pas complet"
+        return redirect("/connexion")
+    
+    user = get_db().get_user_login_info(utilisateur)
+    if user is None:
+        return redirect("/connexion")
+
+    salt = user[0]
+    hashed_password = hashlib.sha512(mdp + salt).hexdigest()
+    if hashed_password == user[1]:
+        id_session = uuid.uuid4().hex
+        get_db().save_session(id_session, utilisateur)
+        session['id'] = id_session
+    return redirect("/admin")
+
+@app.route('/admin-inscription/<token>', methods=['GET', 'POST'])
+@authentication_required
+def sign_up(token):
+    user = get_db().get_user_by_token(token)
+    if user is None:
+        return render_template('404.html'), 404
+    #return render_template('inscription.html', user = user))
+
+@app.route('/deconnexion')
+@authentication_required
+def logout():
+    if "id" in session:
+        id_session = session["id"]
+        session.pop('id', None)
+        get_db().delete_session(id_session)
+    return redirect("/")
+
+def is_authenticated(session):
+    return "id" in session
+
+def send_unauthorized():
+    return Response('Could not verify your access level for that URL.\n'
+                    'You have to login with proper credentials', 401,
+                    {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+
+
+app.secret_key = "H\x9e\xbf3?\x9fR\xea\x9a\xa4dte{\xbfLB]\xb2\xa1\xa4\x1f3&"
+

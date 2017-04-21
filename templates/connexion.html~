@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block contenu %}
+<div>
+  <h1>Connexion</h1>
+  <div>
+    {% if erreur %}
+    <p style="color:#F00">Tous les champs sont obligatoires, corrige-moi ça !</p>
+    {% endif %}
+    <form action="/validation" method="post">
+      <label for="username"> Nom d'utilisateur : </label>
+      <br/>
+      <input type="text" id="username" name="username" maxlength="25">
+      <br/>
+      <label for="mdp"> Mot de passe : </label>
+      <br/>
+      <input type="text" id="mdp" name="mdp" maxlength="25">
+      <br/>
+      <input type="submit" value="Soumettre">
+    </form>
+  </div>
+</div>
+{% endblock %}

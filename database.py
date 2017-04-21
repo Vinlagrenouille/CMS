@@ -94,3 +94,43 @@ class Database:
             {"text": text})
         listArticles = cursor.fetchall()
         return listArticles
+
+    def create_user(self, username, email, salt, hashed_password):
+        connection = self.get_connection()
+        connection.execute(("insert into users(utilisateur, salt, hash)"
+                            " values(?, ?, ?)"), (username, salt,
+                                                     hashed_password))
+        connection.commit()
+    
+    def get_user_login_info(self, username):
+        cursor = self.get_connection().cursor()
+        cursor.execute(("select salt, hash from users where utilisateur=?"),
+                    (username,))
+        user = cursor.fetchone()
+        if user is None:
+            return None
+        else:
+            return user[0], user[1]
+    
+    def save_session(self, id_session, username):
+        connection = self.get_connection()
+        connection.execute(("insert into sessions(id_session, utilisateur) "
+                            "values(?, ?)"), (id_session, username))
+        connection.commit()
+        
+    def delete_session(self, id_session):
+        connection = self.get_connection()
+        connection.execute(("delete from sessions where id_session=?"),
+                           (id_session,))
+        connection.commit()
+        
+    def get_session(self, id_session):
+        cursor = self.get_connection().cursor()
+        cursor.execute(("select utilisateur from sessions where id_session=?"),
+                       (id_session,))
+        data = cursor.fetchone()
+        if data is None:
+            return None
+        else:
+            return data[0]
+        

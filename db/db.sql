@@ -16,3 +16,17 @@ insert into article values (6, 'Coder avec les pieds', 'coder-pieds', 'JJ Jacque
 insert into article values (7, 'Mal coder', 'mal-coder', 'pro-programmeur', '2017-02-01', 'Comme dans Call of Duty : ne respectez rien. Aucune convention ou aucune documentation.');
 insert into article values (8, 'Être un beau programmeur', 'etre-beau-programmeur', 'Heavy Gunner', '2016-01-01', 'Connaissez-vous pile ou face ? C est la même chose. A votre naissance.');
 
+create table users (
+  id integer primary key autoincrement,
+  utilisateur varchar(25),
+  salt varchar(32),
+  hash varchar(128)
+  );
+
+create table sessions (
+  id integer primary key,
+  id_session varchar(32),
+  utilisateur varchar(25)
+  );
+
+insert into users(utilisateur, salt, hash) values ('correcteur', 'e56373736e7646bd85213083ce9f10bf', 'f265b8a63f4a37faf85088030fb34ddb245e194ca1793965225789a4165d0c48fb6dde55ebba6ee85fd3acbfd5295b322d425c28fee79fa64d7be8ef6fe19a99');

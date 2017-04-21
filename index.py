@@ -41,12 +41,14 @@ def valider_date(date):
     except ValueError:
         return False
 
+
 def authentication_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if not is_authenticated(session):
             return render_template("401.html"), 401
         return f(*args, **kwargs)
+
     return decorated
 
 
@@ -179,9 +181,11 @@ def show_modifie_article_page(identifiant):
         return render_template('404.html'), 404
     return render_template('modifieArticle.html', article=article, identifiant=identifiant)
 
+
 @app.route('/recuperation')
 def show_recuperation_page():
     return render_template('reinitialiserMDP.html')
+
 
 @app.route('/reinitialisation', methods=['POST'])
 def send_recuperation_mail():
@@ -192,17 +196,20 @@ def send_recuperation_mail():
     get_db().set_token_for_new_pwd(token, email)
 
     gmail.send_mail_reinit(email, token)
-    
+
     return redirect('/reinit-merci')
+
 
 @app.route('/reinit-merci')
 def show_reinit_thanks_page():
     return render_template("reinit-merci.html")
 
+
 @app.route('/inviter-un-admin')
 @authentication_required
 def show_invite_page():
     return render_template("inviterAdmin.html")
+
 
 @app.route('/invitation', methods=['POST'])
 @authentication_required
@@ -212,11 +219,12 @@ def invite_someone():
         return redirect('/inviter-un-admin')
     token = uuid.uuid4().hex
     get_db().set_token_to_invite(token, email)
-    
+
     gmail.send_mail_invite(email, token)
-    
+
     return redirect('/admin')
-                            
+
+
 @app.route('/inscription/<token>', methods=["GET", "POST"])
 def change_password(token):
     if request.method == "GET":
@@ -227,11 +235,12 @@ def change_password(token):
         if mdp == "" or utilisateur == "":
             return render_template("inscription.html", error="Tous les champs sont obligatoires.")
         salt = uuid.uuid4().hex
-        hashed = hashlib.sha512(mdp+salt).hexdigest()
+        hashed = hashlib.sha512(mdp + salt).hexdigest()
         get_db().confirm_inscription(token, utilisateur, salt, hashed)
-        
+
         return redirect("/connexion");
-                                                                    
+
+
 @app.route('/changer-mot-de-passe/<token>', methods=["GET", "POST"])
 def new_password(token):
     if request.method == "GET":
@@ -241,21 +250,24 @@ def new_password(token):
         if mdp == "":
             return render_template("nouveauMDP.html", error="Veuillez rentrer un mot de passe")
         salt = uuid.uuid4().hex
-        hashed = hashlib.sha512(mdp+salt).hexdigest()
+        hashed = hashlib.sha512(mdp + salt).hexdigest()
         get_db().change_password(token, salt, hashed)
 
         return redirect("/nouveau-mot-de-passe-valide");
 
+
 @app.route('/nouveau-mot-de-passe-valide')
 def show_pwd_valid():
     return render_template("confirm-merci.html")
+
 
 @app.route('/connexion')
 def show_connexion_page():
     if "id" in session:
         return redirect("/admin")
     return render_template('connexion.html')
-    
+
+
 @app.route('/validation', methods=['POST'])
 def connect():
     utilisateur = request.form['utilisateur']
@@ -263,7 +275,7 @@ def connect():
 
     if utilisateur == "" or mdp == "":
         return redirect("/connexion")
-    
+
     user = get_db().get_user_login_info(utilisateur)
     if user is None:
         return redirect("/connexion")
@@ -276,13 +288,15 @@ def connect():
         session['id'] = id_session
     return redirect("/admin")
 
+
 @app.route('/admin-inscription/<token>', methods=['GET', 'POST'])
 @authentication_required
 def sign_up(token):
     user = get_db().get_user_by_token(token)
     if user is None:
         return render_template('404.html'), 404
-    #return render_template('inscription.html', user = user))
+        # return render_template('inscription.html', user = user))
+
 
 @app.route('/deconnexion')
 @authentication_required
@@ -293,12 +307,15 @@ def logout():
         get_db().delete_session(id_session)
     return redirect("/")
 
+
 @app.route('/api/articles/', methods=["GET"])
 def liste_articles():
     if request.method == "GET":
         articles = get_db().get_articles()
-        data = [{"titre": each[1], "identifiant": 'http://127.0.0.1:5000/article/'+each[2], "auteur": each[3]} for each in articles]
+        data = [{"titre": each[1], "identifiant": 'http://127.0.0.1:5000/article/' + each[2], "auteur": each[3]} for
+                each in articles]
         return jsonify(data)
+
 
 @app.route('/api/article/<identifiant>', methods=["GET"])
 def get_all_data_article(identifiant):
@@ -306,43 +323,54 @@ def get_all_data_article(identifiant):
     if article is None:
         return render_template('404.html'), 404
     else:
-        data = [{"id": article[0], "titre": article[1], "identifiant": article[2], "auteur": article[3], "date_publication": article[4], "paragraphe": article[5]}]
-        return jsonify(data)   
+        data = [{"id": article[0], "titre": article[1], "identifiant": article[2], "auteur": article[3],
+                 "date_publication": article[4], "paragraphe": article[5]}]
+        return jsonify(data)
+
 
 @app.route('/api/article/nouveau/', methods=["POST"])
 def nouvel_article():
     data = request.get_json()
     data_en_json = json.loads(data)
-    if not request.json or get_db().identifiant_exists(data_en_json['identifiant']) or get_db().id_exists(data_en_json['id']):
+    if not request.json or get_db().identifiant_exists(data_en_json['identifiant']) or get_db().id_exists(
+            data_en_json['id']):
         abort(400)
     else:
-        article = get_db().new_article(data_en_json['id'], data_en_json['titre'], data_en_json['identifiant'], data_en_json['auteur'], data_en_json['date_publication'], data_en_json['paragraphe'])
+        article = get_db().new_article(data_en_json['id'], data_en_json['titre'], data_en_json['identifiant'],
+                                       data_en_json['auteur'], data_en_json['date_publication'],
+                                       data_en_json['paragraphe'])
     return "", 201
+
 
 @app.route('/batir-ident/<identifiant>', methods=["GET"])
 def verifier_identifiant(identifiant):
     identifiant_existe = get_db().identifiant_exists(identifiant)
     if identifiant_existe == True:
-        return identifiant + str(randint(0,9999))
+        return identifiant + str(randint(0, 9999))
     else:
         return enlever_accents(identifiant)
+
 
 def enlever_accents(identifiant):
     string_replaced = unicodedata.normalize('NFKD', identifiant).encode('ASCII', 'ignore')
     return string_replaced
 
+
 def is_authenticated(session):
     return "id" in session
+
 
 def send_unauthorized():
     return Response('Could not verify your access level for that URL.\n'
                     'You have to login with proper credentials', 401,
                     {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 40
+
+
 4
 
 app.secret_key = "H\x9e\xbf3?\x9fR\xea\x9a\xa4dte{\xbfLB]\xb2\xa1\xa4\x1f3&"
-

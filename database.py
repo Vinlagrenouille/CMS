@@ -104,7 +104,7 @@ class Database:
 
     def set_token_for_new_pwd(self, token, email):
         connection = self.get_connection()
-        connection.execute('update users set token=:token where email=:email', {"token":token, "email":email})
+        connection.execute('update users set token=:token where email=:email', {"token": token, "email": email})
         connection.commit()
 
     def set_token_to_invite(self, token, email):
@@ -114,36 +114,39 @@ class Database:
 
     def confirm_inscription(self, token, utilisateur, salt, hash):
         connection = self.get_connection()
-        connection.execute('update users set utilisateur = :utilisateur, salt = :salt, hash = :hash, token = "" where token = :token', {"utilisateur":utilisateur, "salt":salt, "hash":hash, "token":token})
+        connection.execute(
+            'update users set utilisateur = :utilisateur, salt = :salt, hash = :hash, token = "" where token = :token',
+            {"utilisateur": utilisateur, "salt": salt, "hash": hash, "token": token})
         connection.commit()
-        
+
     def change_password(self, token, salt, hash):
         connection = self.get_connection()
-        connection.execute("update users set hash = :hash, salt = :salt, token = '' where token = :token", {"hash":hash, "salt":salt, "token":token})
+        connection.execute("update users set hash = :hash, salt = :salt, token = '' where token = :token",
+                           {"hash": hash, "salt": salt, "token": token})
         connection.commit()
-    
+
     def get_user_login_info(self, username):
         cursor = self.get_connection().cursor()
         cursor.execute(("select salt, hash from users where utilisateur=?"),
-                    (username,))
+                       (username,))
         user = cursor.fetchone()
         if user is None:
             return None
         else:
             return user[0], user[1]
-    
+
     def save_session(self, id_session, username):
         connection = self.get_connection()
         connection.execute(("insert into sessions(id_session, utilisateur) "
                             "values(?, ?)"), (id_session, username))
         connection.commit()
-        
+
     def delete_session(self, id_session):
         connection = self.get_connection()
         connection.execute(("delete from sessions where id_session=?"),
                            (id_session,))
         connection.commit()
-        
+
     def get_session(self, id_session):
         cursor = self.get_connection().cursor()
         cursor.execute(("select utilisateur from sessions where id_session=?"),
@@ -153,4 +156,3 @@ class Database:
             return None
         else:
             return data[0]
-        
